@@ -1,0 +1,20 @@
+no cigar
+8819 global scalar
+6333 global sse
+5729 global avx
+10835 local scalar
+7724 local sse
+7685 local avx
+8921 glocal scalar
+6277 glocal sse
+6039 glocal avx
+CIGAR
+9091 global scalar
+6345 global sse
+6032 global avx
+10900 local scalar
+7770 local sse 
+7714 local avx 
+8959 glocal scalar
+6314 glocal sse
+6079 glocal avx

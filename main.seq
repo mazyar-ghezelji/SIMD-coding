@@ -1,0 +1,67 @@
+from bio import *
+import time
+
+sequences = []
+queries = []
+targets = []
+#constructing pairs
+for r in FASTA('sequences.fa',fai=False):
+    sequences.append(r.seq)
+for i in range(len(sequences)-1):
+    queries.append(sequences[i])
+    targets.append(sequences[i+1])
+length = len(queries)
+
+#scalar without Cigar
+result=0.0
+for counter in range(10):
+    start = time.time()
+    aln=[]
+    for i in range(length):
+        aln.append( queries[i].align(targets[i], a=1, b=1, gapo=2, gape=2, ambig = 0, score_only=True))
+    end = time.time()
+    result+=end-start
+print("scalar without cigar:", end="")
+print(result/10)
+
+#scalar with Cigar
+result=0.0
+for counter in range(10):
+    start = time.time()
+    aln=[]
+    for i in range(length):
+        aln.append( queries[i].align(targets[i], a=1, b=1, gapo=2, gape=2, ambig = 0, score_only=False))
+    end = time.time()
+    result+=end-start
+print("scalar with cigar:", end="")
+print(result/10)
+
+#intra-sequence without cigar
+@inter_align
+def process(t):
+    query, target = t
+    score = query.align(target, a=1, b=1, ambig=0, gapo=2, gape=2,score_only=True)
+result=0.0
+for counter in range(10):
+    start = time.time()
+    zip(queries, targets) |> process
+    end = time.time()
+    result+=end-start
+
+print("inter-sequence without cigar:", end="")
+print(result/10)
+
+#intra-sequence with cigar
+@inter_align
+def process(t):
+    query, target = t
+    score = query.align(target, a=1, b=1, ambig=0, gapo=2, gape=2,score_only=False)
+    return score
+result=0.0
+for counter in range(10):
+    start = time.time()
+    zip(queries, targets) |> process
+    end = time.time()
+    result+=end-start
+print("inter-sequence with cigar:", end="")
+print(result/10)

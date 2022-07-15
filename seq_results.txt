@@ -1,0 +1,4 @@
+scalar without cigar:0.304817
+scalar with cigar:0.36378
+inter-sequence without cigar:0.312314
+inter-sequence with cigar:0.390108
